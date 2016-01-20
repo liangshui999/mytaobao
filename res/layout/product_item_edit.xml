@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 图片所在的子布局 -->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/product_image_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p1" />
+    </LinearLayout>
+
+    <!-- 产品说明所在的子布局 -->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/product_name_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:text="联想手机p999"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/product_price_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="价格：1999"
+            android:textSize="12sp" />
+    </LinearLayout>
+    
+    <!-- checkbox所在的子布局 -->
+     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        >
+
+        <CheckBox
+            android:id="@+id/product_checkbox"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:checked="false"
+            android:button="@drawable/checkboxstate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"/>
+    </LinearLayout>
+
+</LinearLayout>
