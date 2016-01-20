@@ -18,7 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
-//这是unsqlite分支，这个注释不合并到主分支
+//这是unsqlite分支，这个注释不合并到主分支，1.20 17.47
 public class MainActivity extends Activity {
 	private int menuFlag;//这是一个标记，不同的值对应着不同的menu选项
 	private ProductListFragment productListFragment;
