@@ -104,7 +104,7 @@ public class ProductService implements IProductService {
 		// TODO Auto-generated method stub
 		List<Product> p=new ArrayList<Product>();
 		for(Product product:products){
-			if(product.getName().contains(name)){
+			if(product.getName().indexOf(name)!=-1){
 				p.add(product);
 			}
 		}
@@ -183,6 +183,38 @@ public class ProductService implements IProductService {
 		}
 		return result;
 	}
+	
+	//分页查找数据方法的重写，该方法需要提供products的数据
+		public List<Product> getByPage(int pageIndex,int pageSize,List<Product>productss){
+			if (pageIndex<0) pageIndex=0; 
+			int totalCount = productss.size();  //总条数
+			int pageCount=1; //总页数
+			if (totalCount % pageSize==0){
+				pageCount = totalCount/pageSize;
+			}else{
+				pageCount = (totalCount/pageSize)+1;
+			}
+			
+			if (pageIndex>pageCount-1)//说明是最后一页
+			{
+				//pageIndex = pageCount-1;
+				return null;
+			}
+			
+			Object[] source = productss.toArray();
+			
+			 int endIndex=(pageIndex+1)*pageSize;
+			if (endIndex>totalCount)
+				endIndex=totalCount;
+			
+		
+			List<Product> result = new ArrayList<Product>();
+			for(int i=pageIndex*pageSize;i<endIndex;i++){
+				result.add((Product)source[i]);
+			}
+			return result;
+		}
+	
 	//添加数据到购物车里面
 	public Boolean addToShoppingProducts(List<Product>shoppingproducts){
 		return shoppingProducts.addAll(shoppingproducts);

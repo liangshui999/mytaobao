@@ -15,6 +15,9 @@ public class ProductManager {
 	public List<Product> getByPage(int pageIndex, int pageSize){
 		return ip.getByPage(pageIndex, pageSize);
 	}
+	public List<Product> getByPage(int pageIndex,int pageSize,List<Product>productss){
+		return ip.getByPage(pageIndex, pageSize, productss);
+	}
 	public Product getById(int productId){
 		return ip.getById(productId);
 	}

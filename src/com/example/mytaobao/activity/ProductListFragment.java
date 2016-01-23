@@ -14,6 +14,8 @@ import com.example.mytaobao.util.MyLog;
 
 import android.R.integer;
 import android.app.ListFragment;
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -26,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 //ListActivity里面自带一个listview，都不用去自己见listview的xml文件
@@ -148,6 +151,13 @@ public class ProductListFragment extends ListFragment {
 	}
 
 	
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		getActivity().invalidateOptionsMenu();
+	}
 
 	@Override
 	public void onStop() {
@@ -167,6 +177,11 @@ public class ProductListFragment extends ListFragment {
 			MenuInflater inflater = getActivity().getMenuInflater();
 			inflater.inflate(R.menu.no_edit_menu, menu);
 			MenuItem searchItem = menu.findItem(R.id.search);
+			SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView)searchItem.getActionView();
+			ComponentName cn = new ComponentName(getActivity(), ProductsSearchActivity.class);
+			searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
+			searchView.setIconifiedByDefault(false);
 			MenuItemCompat.setOnActionExpandListener(searchItem,
 					new OnActionExpandListener() {
 
