@@ -17,5 +17,6 @@ public interface IProductService {
 	public void del(Product product);//删除商品
 	public Boolean addToShoppingProducts(List<Product>shoppingproducts);//网购物车里添加商品
 	public List<Product> getShopProducts();//获取购物车的数据
+	public List<Product> getAllProducts();//获取所有商品
 
 }

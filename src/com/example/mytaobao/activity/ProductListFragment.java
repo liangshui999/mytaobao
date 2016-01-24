@@ -13,6 +13,7 @@ import com.example.mytaobao.util.MyApplication;
 import com.example.mytaobao.util.MyLog;
 
 import android.R.integer;
+import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.SearchManager;
 import android.content.ComponentName;
@@ -20,20 +21,28 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
+import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 //ListActivity里面自带一个listview，都不用去自己见listview的xml文件
-public class ProductListFragment extends ListFragment {
-	private int menuFlag;// 这是一个标记，不同的值对应着不同的menu选项
+public class ProductListFragment extends Fragment {
+	private int menuFlag;// 这是一个标记，不同的值对应着不同的menu选项：0是初始状态；1表示编辑状态；2表示网格视图状态
+	private static final int ORGIN_STATE = 0;
+	private static final int EDIT_STATE = 1;
+	private static final int GRID_STATE = 2;
 	private Menu menu;
 	private List<Product> products;
 	private ListView listView;
@@ -43,6 +52,8 @@ public class ProductListFragment extends ListFragment {
 	private int pageSize;
 	private Context context;
 	private HashMap<Integer, Boolean> org;
+	private GridView gridView;
+	private LinearLayout linearLayout;
 
 	public int getMenuFlag() {
 		return menuFlag;
@@ -63,6 +74,9 @@ public class ProductListFragment extends ListFragment {
 	public ListView getListViewFromProductListFragment() {
 		return listView;
 	}
+	public GridView getGridView(){
+		return gridView;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,16 +85,28 @@ public class ProductListFragment extends ListFragment {
 		setHasOptionsMenu(true);
 		MyLog.d("ProductListFragment", "onCreate");
 	}
-	
-	//这种碎片肯定会经历onSaveInstanceState(Bundle outState)，因为他的tablistener中的onTabSelected（）调用了onAttach（）
-	//而 onTabUnselected（）这个方法却调用了detach（）方法。因此我需要用onSaveInstanceState（）来保存他的状态
-	////这里面还涉及到了用bundle来传递对象，在第一行代码的书里面有介绍，必须传递productAdapter对象，还有IsSelected这个map集合
+
+	// 这种碎片肯定会经历onSaveInstanceState(Bundle
+	// outState)，因为他的tablistener中的onTabSelected（）调用了onAttach（）
+	// 而 onTabUnselected（）这个方法却调用了detach（）方法。因此我需要用onSaveInstanceState（）来保存他的状态
+	// //这里面还涉及到了用bundle来传递对象，在第一行代码的书里面有介绍，必须传递productAdapter对象，还有IsSelected这个map集合
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
-		org=productAdapter.getIsSelected();
-		
+		org = productAdapter.getIsSelected();
+
+	}
+	
+	//自定义fragment的布局
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		View view=inflater.inflate(R.layout.product_listfragment, null);
+		listView=(ListView) view.findViewById(R.id.listview);
+		gridView=(GridView) view.findViewById(R.id.gridview);
+		return view;
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -90,12 +116,12 @@ public class ProductListFragment extends ListFragment {
 		pageSize = 5;
 		productManager = Init.getProductManager();
 		products = productManager.getByPage(pageIndex, pageSize);
-		listView = getListView();// 得到listactivity自带的listview
+//		listView = getListView();// 得到listactivity自带的listview
 		MyLog.d("ProductListFragment", listView + "");
 		context = getActivity();
 		productAdapter = new ProductAdapter(context, products);
-		// listView.setAdapter(productAdapter);
-		setListAdapter(productAdapter);// 注意这里得用这个而不能用上面那个，用上面那个是错的
+		listView.setAdapter(productAdapter);
+//		setListAdapter(productAdapter);// 注意这里得用这个而不能用上面那个，用上面那个是错的
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -135,7 +161,7 @@ public class ProductListFragment extends ListFragment {
 				// break;
 
 				default:
-					if (menuFlag == 1) {
+					if (menuFlag == EDIT_STATE) {
 						ViewHolder viewHolder = (ViewHolder) view.getTag();
 						CheckBox checkBox = viewHolder.getCheckBox();
 						checkBox.toggle();
@@ -150,21 +176,19 @@ public class ProductListFragment extends ListFragment {
 		});
 	}
 
-	
-	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		getActivity().invalidateOptionsMenu();
+		// getActivity().invalidateOptionsMenu();
 	}
 
 	@Override
 	public void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		//menuFlag = 0;// 切换到别的碎片的时候，需要把menuflag设置为0
-		menu.clear();
+		// menuFlag = 0;// 切换到别的碎片的时候，需要把menuflag设置为0
+		// menu.clear();
 
 	}
 
@@ -173,13 +197,15 @@ public class ProductListFragment extends ListFragment {
 	public void onPrepareOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		menu.clear();
-		if (menuFlag == 0) {
+		if (menuFlag == ORGIN_STATE) {
 			MenuInflater inflater = getActivity().getMenuInflater();
 			inflater.inflate(R.menu.no_edit_menu, menu);
 			MenuItem searchItem = menu.findItem(R.id.search);
-			SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-			SearchView searchView = (SearchView)searchItem.getActionView();
-			ComponentName cn = new ComponentName(getActivity(), ProductsSearchActivity.class);
+			SearchManager searchManager = (SearchManager) getActivity()
+					.getSystemService(Context.SEARCH_SERVICE);
+			SearchView searchView = (SearchView) searchItem.getActionView();
+			ComponentName cn = new ComponentName("com.example.mytaobao",
+					"com.example.mytaobao.activity.ProductsSearchActivity");// 直接指定搜索组件的明证
 			searchView.setSearchableInfo(searchManager.getSearchableInfo(cn));
 			searchView.setIconifiedByDefault(false);
 			MenuItemCompat.setOnActionExpandListener(searchItem,
@@ -200,9 +226,12 @@ public class ProductListFragment extends ListFragment {
 										// true，不然的话，actionview不会伸展开来
 						}
 					});
-		} else {
+		} else if (menuFlag == EDIT_STATE) {
 			MenuInflater inflater = getActivity().getMenuInflater();
 			inflater.inflate(R.menu.edit_menu, menu);
+		} else {
+			MenuInflater inflater = getActivity().getMenuInflater();
+			inflater.inflate(R.menu.grid_menu, menu);
 		}
 		this.menu = menu;
 
@@ -213,12 +242,13 @@ public class ProductListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 		switch (item.getItemId()) {
-		case R.id.edit:			
-			productAdapter=new ProductAdapter(context,products, R.layout.product_item_edit);
-			this.setListAdapter(productAdapter);//这个直接就把onActivityCreated里面的adapter换了						
-			//更改actionbar上的menu
-			menuFlag=1;
-			getActivity().invalidateOptionsMenu();			
+		case R.id.edit:
+			productAdapter = new ProductAdapter(context, products,
+					R.layout.product_item_edit);
+			listView.setAdapter(productAdapter);// 这个直接就把onActivityCreated里面的adapter换了
+			// 更改actionbar上的menu
+			menuFlag = EDIT_STATE;
+			getActivity().invalidateOptionsMenu();
 			return true;
 		case R.id.sort:
 			Toast.makeText(context, "sort", Toast.LENGTH_SHORT).show();
@@ -226,39 +256,77 @@ public class ProductListFragment extends ListFragment {
 		case R.id.all_select:
 			productAdapter.allSeleted();
 			productAdapter.notifyDataSetChanged();
-			//Toast.makeText(context, "all_select", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(context, "all_select", Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.all_unselect:
 			productAdapter.unallSeleted();
 			productAdapter.notifyDataSetChanged();
-			//Toast.makeText(context, "all_unselect", Toast.LENGTH_SHORT).show();
+			// Toast.makeText(context, "all_unselect",
+			// Toast.LENGTH_SHORT).show();
 			return true;
 		case R.id.add:
 			Toast.makeText(context, "add", Toast.LENGTH_SHORT).show();
 			return true;
-		case R.id.delete:			
-			org=productAdapter.getIsSelected();
-			List<Product>temp=new ArrayList<Product>();
-			for(Map.Entry<Integer,Boolean>e:org.entrySet()){
-				if(e.getValue()){
-					//products.remove(e.getKey());
+		case R.id.delete:
+			org = productAdapter.getIsSelected();
+			List<Product> temp = new ArrayList<Product>();
+			for (Map.Entry<Integer, Boolean> e : org.entrySet()) {
+				if (e.getValue()) {
+					// products.remove(e.getKey());
 					temp.add(products.get(e.getKey()));
-					MyLog.d("ProductListFragment", ""+e.getKey());
-					MyLog.d("ProductListFragment", ""+e.getValue());
-				}				
+					MyLog.d("ProductListFragment", "" + e.getKey());
+					MyLog.d("ProductListFragment", "" + e.getValue());
+				}
 			}
 			products.removeAll(temp);
-			MyLog.d("ProductListFragment", products.size()+"");
-			productAdapter=new ProductAdapter(context, products);
-			setListAdapter(productAdapter);
-			menuFlag=0;
+			MyLog.d("ProductListFragment", products.size() + "");
+			productAdapter = new ProductAdapter(context, products);
+			listView.setAdapter(productAdapter);
+			menuFlag = ORGIN_STATE;
 			getActivity().invalidateOptionsMenu();
 			return true;
 		case R.id.search:
 			return false;
+		case R.id.grid:
+			Toast.makeText(context, "网格视图", Toast.LENGTH_SHORT).show();
+			listView.setVisibility(View.GONE);
+			//View view=LayoutInflater.from(context).inflate(R.layout.product_listfragment, null);			
+			MyLog.d("ProductListFragment", gridView.toString());
+			//gridView.setVisibility(View.VISIBLE);
+			SimpleAdapter simpleAdapter=getSimpleAdapter();
+			MyLog.d("ProductListFragment", simpleAdapter.toString());
+			//listView.setAdapter(simpleAdapter);
+			gridView.setAdapter(simpleAdapter);
+			//setListAdapter(simpleAdapter);			
+			menuFlag = GRID_STATE;
+			getActivity().invalidateOptionsMenu();// 动态切换menu
+			return true;
+		case R.id.list:
+			gridView.setVisibility(View.GONE);
+			Toast.makeText(context, "列表视图", Toast.LENGTH_SHORT).show();
+			menuFlag = ORGIN_STATE;
+			getActivity().invalidateOptionsMenu();// 动态切换menu
+			return true;
 		default:
-			return false;//这里默认应该为false，否则导航好像没有效果
-		}		
+			return false;// 这里默认应该为false，否则导航好像没有效果
+		}
+	}
+
+	// 获取简单适配器
+	public SimpleAdapter getSimpleAdapter() {
+		// TODO Auto-generated method stub
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		List<Product> gridProducts = productManager.getAllProducts();// 这个就不分页了，获取所有商品
+		for (int i = 0; i < gridProducts.size(); i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("image", gridProducts.get(i).getPictrue());
+			map.put("name", gridProducts.get(i).getName());
+			list.add(map);
+		}
+		SimpleAdapter simpleAdapter = new SimpleAdapter(context, list,
+				R.layout.grid_item, new String[] { "image", "name" },
+				new int[] { R.id.image, R.id.text });
+		return simpleAdapter;
 	}
 
 	// listview里面项目的点击事件的方法
@@ -276,6 +344,5 @@ public class ProductListFragment extends ListFragment {
 	// //// productAdapter.notifyDataSetChanged();
 	// //// }
 	// // }
-	
 
 }

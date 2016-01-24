@@ -48,5 +48,8 @@ public class ProductManager {
 	public List<Product> getShopProducts(){
 		return ip.getShopProducts();
 	}
+	public List<Product> getAllProducts(){
+		return ip.getAllProducts();
+	}
 
 }

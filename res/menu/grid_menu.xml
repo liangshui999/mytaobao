@@ -13,10 +13,10 @@
         android:showAsAction="ifRoom"
         android:title="编辑"/>
     <item
-        android:id="@+id/grid"
-        android:icon="@drawable/gridview"
+        android:id="@+id/list"
+        android:icon="@drawable/listview"
         android:showAsAction="ifRoom"
-        android:title="网格视图"/>
+        android:title="列表视图"/>
     <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_menu_sort"

@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.mytaobao.biz.Init;
 import com.example.mytaobao.biz.ProductManager;
 import com.example.mytaobao.model.Product;
+import com.example.mytaobao.util.MyLog;
 
 import android.R.integer;
 import android.app.ListActivity;
@@ -27,6 +28,7 @@ public class ProductsSearchActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		MyLog.d("ProductsSearchActivity", "onCreate");
 		super.onCreate(savedInstanceState);
 		manager=Init.getProductManager();
 		pageIndex=0;
@@ -66,11 +68,13 @@ public class ProductsSearchActivity extends ListActivity {
 					}
 				}
 			});
+		}else{
+			Toast.makeText(ProductsSearchActivity.this, "未查到", Toast.LENGTH_SHORT).show();
 		}
 		
 	}
 	
-	//根据名称进行模糊查询，并将查询的结果返回
+	//根据名称进行模糊查询，并将查询的结果返回,注意这个用的是原始数据进行的查询
 	private List<Product> searchByName(String name) {
 		// TODO Auto-generated method stub
 		return manager.getByName(name);

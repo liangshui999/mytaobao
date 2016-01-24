@@ -16,7 +16,9 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -85,7 +87,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
-//		switch (item.getItemId()) {
+		switch (item.getItemId()) {
 //		case R.id.edit:
 //			//先要得到productlistfragment,然后更换适配器
 //			productListFragment=(ProductListFragment) getFragmentManager().findFragmentByTag("ProductListFragment");
@@ -123,6 +125,15 @@ public class MainActivity extends Activity {
 //		case R.id.search:
 //			return false;
 //		default:
+//	case R.id.grid:	
+//		productListFragment=(ProductListFragment) getFragmentManager().findFragmentByTag("ProductListFragment");
+//		productListFragment.getListView().setVisibility(View.GONE);	
+//		productListFragment.getGridView().setVisibility(View.VISIBLE);
+//		SimpleAdapter simpleAdapter=productListFragment.getSimpleAdapter();		
+//		productListFragment.getGridView().setAdapter(simpleAdapter);					
+//		productListFragment.setMenuFlag(3) ;
+//		invalidateOptionsMenu();// 动态切换menu
+		}
 		return false;//这里默认应该为false，否则导航好像没有效果
 //		}		
 	}
@@ -161,7 +172,7 @@ public class MainActivity extends Activity {
 	private void initInterface() {
 		products=productListFragment.getProductsFromProductListFragment();
 		ProductAdapter productAdapter=new ProductAdapter(this,products, R.layout.product_item);		
-		productListFragment.setListAdapter(productAdapter);//这个直接就把onActivityCreated里面的adapter换了
+		productListFragment.getListViewFromProductListFragment().setAdapter(productAdapter);//这个直接就把onActivityCreated里面的adapter换了
 		productListFragment.setProductAdapter(productAdapter);//这个相当于把下面点击事件里面的adapter换了
 		menuFlag=0;
 		productListFragment.setMenuFlag(menuFlag);

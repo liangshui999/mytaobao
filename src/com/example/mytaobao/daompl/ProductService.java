@@ -223,5 +223,11 @@ public class ProductService implements IProductService {
 	public List<Product> getShopProducts(){
 		return shoppingProducts;
 	}
+	//获取所有商品
+	@Override
+	public List<Product> getAllProducts() {
+		// TODO Auto-generated method stub
+		return products;
+	}
 
 }
