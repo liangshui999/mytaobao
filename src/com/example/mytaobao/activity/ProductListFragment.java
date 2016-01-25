@@ -21,14 +21,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -54,6 +57,7 @@ public class ProductListFragment extends Fragment {
 	private HashMap<Integer, Boolean> org;
 	private GridView gridView;
 	private LinearLayout linearLayout;
+//	private SimpleAdapter simpleAdapter;
 
 	public int getMenuFlag() {
 		return menuFlag;
@@ -231,7 +235,8 @@ public class ProductListFragment extends Fragment {
 			inflater.inflate(R.menu.edit_menu, menu);
 		} else {
 			MenuInflater inflater = getActivity().getMenuInflater();
-			inflater.inflate(R.menu.grid_menu, menu);
+			inflater.inflate(R.menu.grid_menu_swap, menu);
+			
 		}
 		this.menu = menu;
 
@@ -289,20 +294,19 @@ public class ProductListFragment extends Fragment {
 			return false;
 		case R.id.grid:
 			Toast.makeText(context, "网格视图", Toast.LENGTH_SHORT).show();
-			listView.setVisibility(View.GONE);
-			//View view=LayoutInflater.from(context).inflate(R.layout.product_listfragment, null);			
-			MyLog.d("ProductListFragment", gridView.toString());
-			//gridView.setVisibility(View.VISIBLE);
-			SimpleAdapter simpleAdapter=getSimpleAdapter();
+			listView.setVisibility(View.GONE);					
+			gridView.setVisibility(View.VISIBLE);
+			SimpleAdapter simpleAdapter=getSimpleAdapter(R.layout.grid_item);
 			MyLog.d("ProductListFragment", simpleAdapter.toString());
-			//listView.setAdapter(simpleAdapter);
-			gridView.setAdapter(simpleAdapter);
-			//setListAdapter(simpleAdapter);			
+			gridView.setAdapter(simpleAdapter);			
 			menuFlag = GRID_STATE;
-			getActivity().invalidateOptionsMenu();// 动态切换menu
+			getActivity().invalidateOptionsMenu();// 动态切换menu			
+			//为gridview设置contextual menu
+			setGridviewContextualMenu();
 			return true;
 		case R.id.list:
 			gridView.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
 			Toast.makeText(context, "列表视图", Toast.LENGTH_SHORT).show();
 			menuFlag = ORGIN_STATE;
 			getActivity().invalidateOptionsMenu();// 动态切换menu
@@ -311,9 +315,66 @@ public class ProductListFragment extends Fragment {
 			return false;// 这里默认应该为false，否则导航好像没有效果
 		}
 	}
+	
+	//为gridview设置contextual menu
+	public void setGridviewContextualMenu() {
+		gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		gridView.setMultiChoiceModeListener(new MultiChoiceModeListener(){
+			//长按的时候会生成的视图
+			@Override
+			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub				
+				MenuInflater inflater = mode.getMenuInflater();			
+		        inflater.inflate(R.menu.grid_menu, menu);
+		        SimpleAdapter simpleAdapter=getSimpleAdapter(R.layout.grid_item_long_click);
+		        gridView.setAdapter(simpleAdapter);
+		        return true;
+
+			}
+
+			@Override
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			//设置每个菜单项点击之后的事件
+			@Override
+			public boolean onActionItemClicked(ActionMode mode,
+					MenuItem item) {
+				// TODO Auto-generated method stub
+				switch (item.getItemId()) {
+				case R.id.list:						
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+			//用户做出选择之后，contexmenu就会消失，这个时候，需要把视图切换回去
+			@Override
+			public void onDestroyActionMode(ActionMode mode) {
+				// TODO Auto-generated method stub
+				initGridview();
+			}
+			//让gridview回到初始视图，不论用户做完了什么选择，都应该回到初始视图
+			public void initGridview() {
+				SimpleAdapter simpleAdapter=getSimpleAdapter(R.layout.grid_item);
+		        gridView.setAdapter(simpleAdapter);
+			}
+
+			@Override
+			public void onItemCheckedStateChanged(ActionMode mode,
+					int position, long id, boolean checked) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+	}
 
 	// 获取简单适配器
-	public SimpleAdapter getSimpleAdapter() {
+	public SimpleAdapter getSimpleAdapter(int resource) {
 		// TODO Auto-generated method stub
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		List<Product> gridProducts = productManager.getAllProducts();// 这个就不分页了，获取所有商品
@@ -324,8 +385,8 @@ public class ProductListFragment extends Fragment {
 			list.add(map);
 		}
 		SimpleAdapter simpleAdapter = new SimpleAdapter(context, list,
-				R.layout.grid_item, new String[] { "image", "name" },
-				new int[] { R.id.image, R.id.text });
+				resource, new String[] { "image", "name" },
+				new int[] { R.id.image, R.id.text });		
 		return simpleAdapter;
 	}
 

@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/search"
-        android:actionViewClass="android.widget.SearchView"
-        android:icon="@drawable/ic_menu_search"
-        android:showAsAction="ifRoom|collapseActionView"
-        android:title="搜索"/>
-    <item
-        android:id="@+id/edit"
-        android:icon="@drawable/ic_menu_compose"
-        android:showAsAction="ifRoom"
-        android:title="编辑"/>
-    <item
-        android:id="@+id/list"
-        android:icon="@drawable/listview"
-        android:showAsAction="ifRoom"
-        android:title="列表视图"/>
-    <item
-        android:id="@+id/sort"
-        android:icon="@drawable/ic_menu_sort"
-        android:showAsAction="ifRoom"
-        android:title="排序"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >       
+    
+    <item 
+        android:id="@+id/all_select"
+        android:title="全选"
+        android:icon="@drawable/menu_all_select"
+        android:showAsAction="ifRoom"/>
+      <item 
+        android:id="@+id/all_unselect"
+        android:title="全消"
+        android:icon="@drawable/menu_all_unselect"
+        android:showAsAction="ifRoom"/>
+      
+        <item 
+        android:id="@+id/delete"
+        android:title="删除"
+        android:icon="@drawable/ic_menu_delete"
+        android:showAsAction="ifRoom"/>
 
 </menu>

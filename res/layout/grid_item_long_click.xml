@@ -23,6 +23,18 @@
         android:maxLines="2"
         android:text="hhahhahahhahhah的了撒娇的佛杀桑德菲杰老司机发生的快乐分手的福利上岛咖啡没说的了撒旦拉升的开发撒马上的反垄断 " />
 
-    
+    <CheckBox
+        android:id="@+id/product_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:button="@drawable/checkboxstate"
+        android:checked="false"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+         >
+    </CheckBox>
 
 </RelativeLayout>

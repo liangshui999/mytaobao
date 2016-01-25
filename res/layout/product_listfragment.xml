@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- 这外面的布局得用RelativeLayout，而不能用linearlayout，否则下面的gridview不显示-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_height="fill_parent"
+         >
 
         <!-- 想自定义listview的话，这个地方必须这样写 android:id="@id/android:list" -->
 
@@ -20,8 +21,8 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_height="fill_parent"
+         >
 
         <GridView
             android:id="@+id/gridview"
@@ -30,8 +31,9 @@
             android:horizontalSpacing="10dp"
             android:numColumns="3"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" >
+            android:verticalSpacing="10dp"
+            android:visibility="gone" >
         </GridView>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
