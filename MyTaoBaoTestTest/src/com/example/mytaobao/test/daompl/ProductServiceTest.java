@@ -5,7 +5,7 @@ import java.util.List;
 import android.test.AndroidTestCase;
 
 import com.example.mytaobao.R;
-import com.example.mytaobao.daompl.ProductService;
+import com.example.mytaobao.daomplMoni.ProductService;
 import com.example.mytaobao.model.Product;
 
 public class ProductServiceTest extends AndroidTestCase{

@@ -3,7 +3,7 @@ package com.example.mytaobao.biz;
 import java.util.List;
 
 import com.example.mytaobao.dao.IProductService;
-import com.example.mytaobao.daompl.ProductService;
+import com.example.mytaobao.daomplMoni.ProductService;
 import com.example.mytaobao.model.Product;
 
 public class ProductManager {

@@ -3,7 +3,7 @@ package com.example.mytaobao.biz;
 import java.util.List;
 
 import com.example.mytaobao.dao.ICategoryService;
-import com.example.mytaobao.daompl.CategoryService;
+import com.example.mytaobao.daomplMoni.CategoryService;
 import com.example.mytaobao.model.Category;
 
 public class CategoryManager {

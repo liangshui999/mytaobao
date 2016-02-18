@@ -7,6 +7,7 @@ import com.example.mytaobao.R.menu;
 import com.example.mytaobao.biz.Init;
 import com.example.mytaobao.biz.UserManager;
 import com.example.mytaobao.model.User;
+import com.example.mytaobao.util.MyApplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -81,7 +82,7 @@ public class LoginActivity extends FragmentActivity implements android.view.View
 			//MyLog.d("MainActivity", "haha"+userManager.login(userIdEditText.toString(), passwordEditText.toString()).getUserId());
 			User user= userManager.login(userIdEditText.getText().toString(), passwordEditText.getText().toString());
 			if(user!=null){
-				Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+				Toast.makeText(MyApplication.getContext(), "登录成功", Toast.LENGTH_LONG).show();
 				Intent intent=new Intent(LoginActivity.this,MainActivity.class);
 				startActivity(intent);
 			}else{

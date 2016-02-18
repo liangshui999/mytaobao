@@ -1,7 +1,7 @@
 package com.example.mytaobao.test.daompl;
 
 import com.example.mytaobao.biz.UserManager;
-import com.example.mytaobao.daompl.UserService;
+import com.example.mytaobao.daomplMoni.UserService;
 import com.example.mytaobao.model.User;
 
 import android.test.AndroidTestCase;

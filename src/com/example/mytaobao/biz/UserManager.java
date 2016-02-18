@@ -1,7 +1,7 @@
 package com.example.mytaobao.biz;
 
 import com.example.mytaobao.dao.IUserService;
-import com.example.mytaobao.daompl.UserService;
+import com.example.mytaobao.daomplMoni.UserService;
 import com.example.mytaobao.model.User;
 
 public class UserManager {

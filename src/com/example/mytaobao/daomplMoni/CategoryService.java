@@ -1,4 +1,4 @@
-package com.example.mytaobao.daompl;
+package com.example.mytaobao.daomplMoni;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +27,6 @@ public class CategoryService implements ICategoryService {
 		// TODO Auto-generated method stub
 		return categories.get(categoryId);
 	}
+	
 
 }
