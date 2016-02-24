@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.example.mytaobao.dao.IProductService;
 import com.example.mytaobao.daomplMoni.ProductService;
+import com.example.mytaobao.daomplZhenshi.ZProductService;
 import com.example.mytaobao.model.Product;
 
 public class ProductManager {
 	private IProductService ip=null;
 	
 	public ProductManager() {
-		ip=new ProductService();
+		ip=new ZProductService();
 	}
 	public List<Product> getByPage(int pageIndex, int pageSize){
 		return ip.getByPage(pageIndex, pageSize);

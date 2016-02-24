@@ -9,6 +9,7 @@ import com.example.mytaobao.R;
 import com.example.mytaobao.biz.Init;
 import com.example.mytaobao.biz.ProductManager;
 import com.example.mytaobao.model.Product;
+import com.example.mytaobao.util.ImageUtil;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -170,8 +171,8 @@ public class ProductAdapter extends BaseAdapter {
 			
 		}
 		if(viewHolder!=null){
-			viewHolder.getImageView().setImageResource(
-					products.get(position).getPictrue());
+			viewHolder.getImageView().setImageBitmap(
+					ImageUtil.convertByteArrayToBitmap(products.get(position).getImage()));
 			viewHolder.getProductName().setText(
 					products.get(position).getName());
 			viewHolder.getProductPrice().setText(

@@ -13,10 +13,13 @@ public interface IProductService {
 	public void insert(Product product,int positon);//指定位置插入商品
 	public void addAll(List<Product>products);//添加一个子集合进去
 	public void modify(int productId,int categoryId,String name,String note,int pictrue,Double price);//修改对应id处的商品
+	public void modify(int productId,int categoryId,String name,String note,byte[] image,Double price);//修改对应id处的商品
 	public void del(int productId);//删除对应id处的商品
 	public void del(Product product);//删除商品
 	public Boolean addToShoppingProducts(List<Product>shoppingproducts);//网购物车里添加商品
 	public List<Product> getShopProducts();//获取购物车的数据
 	public List<Product> getAllProducts();//获取所有商品
+	void modify(int productId, int categoryId, String name, String note,
+			Double price);
 
 }

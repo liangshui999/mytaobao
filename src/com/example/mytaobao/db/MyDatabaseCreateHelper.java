@@ -19,7 +19,7 @@ public class MyDatabaseCreateHelper extends SQLiteOpenHelper {
 			+"id integer primary key,"
 			+"name text not null,"
 			+"categoryId integer,"
-			+"pictrue blob,"
+			+"image blob,"
 			+"price real,"
 			+"note text,"
 			+"constraint waijian foreign key(categoryId) references category(categoryId))";

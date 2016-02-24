@@ -229,5 +229,17 @@ public class ProductService implements IProductService {
 		// TODO Auto-generated method stub
 		return products;
 	}
+	@Override
+	public void modify(int productId, int categoryId, String name, String note,
+			byte[] image, Double price) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void modify(int productId, int categoryId, String name, String note,
+			Double price) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -7,7 +7,12 @@
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
-	<!-- 注意application写在这里才是正确的 -->
+    <!-- 权限声明 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>    
+    
+    
+    <!-- 注意application写在这里才是正确的 -->
     <application
         android:name="com.example.mytaobao.util.MyApplication"
         android:allowBackup="true"
@@ -41,7 +46,7 @@
         <!-- 搜索activity -->
         <activity
             android:name="com.example.mytaobao.activity.ProductsSearchActivity"
-            android:launchMode="singleTop" ><!-- 当活动已经在栈顶的时候就不用再重新启动了 -->
+            android:launchMode="singleTop" > <!-- 当活动已经在栈顶的时候就不用再重新启动了 -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -52,6 +57,5 @@
             </meta-data>
         </activity>
     </application>
-    
 
 </manifest>
